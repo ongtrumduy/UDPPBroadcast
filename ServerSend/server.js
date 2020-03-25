@@ -32,13 +32,9 @@ server.on("message", (msg, rinfo) => {
     const ip_receive_convert = rinfo.address.toString("utf8");
     ip_receive.push(ip_receive_convert);
 
+    console.log("IP đã nhận: ");
+    console.log(ip_receive_convert);
 
-    // console.log("=============================================");
-    // console.log("Các IP đã nhận: ");
-    // ip_receive.forEach(item => {
-    //     console.log(item);
-    // })
-    // console.log("=============================================");
 
 }
 )
