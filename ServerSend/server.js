@@ -28,8 +28,12 @@ server.bind(port);
 
 
 var message_send = "IP???"
+var data_receive = 0;
 
-server.send(Buffer.from(message_send), 18181, ip_broadcast);
+server.send(Buffer.from(message_send), 18181, ip_broadcast, (err) => {
+    console.log(err);
+});
+
 
 server.on("message", (msg, rinfo) => {
     console.log("Gửi yêu cầu: IP???");
@@ -45,8 +49,12 @@ server.on("message", (msg, rinfo) => {
     console.log(server_receive_address);
 
     socket.on("sendserialnumber", function (data) {
-        console.log("Serial number:");
-        console.log(data);
+        if (data_receive !== data) {
+            console.log("Serial number:");
+            console.log(data);
+            socket.emit("test", "Đã nhận được rồi!!!");
+            data_receive = data;
+        }
     })
 }
 )

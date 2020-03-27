@@ -49,12 +49,13 @@ server.on('message', (msg, rinfo) => {
     console.log("=============================================");
   }
   io.on("connection", function (socket) {
-    socket.emit("sendserialnumber", serial_number);
+    io.emit("sendserialnumber", serial_number);
     socket.on("test", function (data) {
       console.log("Gửi trả:");
-      console.log(data);
+      console.log(data); 
     })
   });
+ 
 });
 
 
