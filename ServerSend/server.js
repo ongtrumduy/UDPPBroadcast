@@ -29,29 +29,49 @@ server.on("listening", () => {
 
 server.bind(port);
 
-var message_send = "IP???"
+var message_send = "IP?"
 var data_ip_receive = 0;
 var data_number_receive = 0;
+var number_serial_array = [""];
 
 
-server.send(Buffer.from(message_send), 18181, ip_broadcast, (err) => {
-    console.log(err);
-});
-
-io.on("connect", function (socket) {
-    socket.on("sendIP", function (data) {
-        if (data_ip_receive !== data) {
-            console.log("Ip Server Receive:");
-            console.log(data);
-            socket.emit("test", "Đã nhận được rồi!!!");
-            data_ip_receive = data;
-        }
+sleep = (ms) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
     })
+}
+
+
+sendMessage()
+
+
+async function sendMessage() {
+
+    for (let i = 0; i < 30; i++) {
+        await sleep(500);
+        console.log("Iteration ", i);
+        server.send(Buffer.from(message_send), 18181, ip_broadcast);
+    }
+}
+
+io.on("connection", function (socket) {
+    // socket.on("sendIP", function (data) {
+    //     if (data_ip_receive !== data) {
+    //         console.log("Ip Server Receive:");
+    //         console.log(data);
+    //         socket.emit("test", "Đã nhận được rồi!!!");
+    //         data_ip_receive = data;
+    //     }
+    // })
     socket.on("sendserialnumber", function (data) {
-        if (data_number_receive !== data) {
-            console.log("Serial number:");
-            console.log(data);
-            data_number_receive = data;
-        }
+        number_serial_array.forEach(item => {
+            if (item !== data) {
+                number_serial_array.push(data);
+            }
+        })
+        console.log("Serial number:");
+        number_serial_array.forEach(item => {
+            console.log(item);
+        })
     })
 })
