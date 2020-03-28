@@ -32,7 +32,7 @@ server.bind(port);
 var message_send = "IP?"
 var data_ip_receive = 0;
 var data_number_receive = 0;
-var number_serial_array = [""];
+var number_serial_array = [];
 
 
 sleep = (ms) => {
@@ -43,14 +43,14 @@ sleep = (ms) => {
 
 
 sendMessage()
-
+var count = 0;
 
 async function sendMessage() {
-
-    for (let i = 0; i < 30; i++) {
-        await sleep(500);
-        console.log("Iteration ", i);
+    for (let i = 0; i < 100; i++) {
+        await sleep(100);
+        // console.log("Iteration ", i);
         server.send(Buffer.from(message_send), 18181, ip_broadcast);
+        count++;
     }
 }
 
@@ -64,14 +64,19 @@ io.on("connection", function (socket) {
     //     }
     // })
     socket.on("sendserialnumber", function (data) {
-        number_serial_array.forEach(item => {
-            if (item !== data) {
-                number_serial_array.push(data);
-            }
-        })
+
+        if (number_serial_array.indexOf(data) < 0) {
+            number_serial_array.push(data)
+        }
+
+    })
+    if (count === 100) {
         console.log("Serial number:");
         number_serial_array.forEach(item => {
             console.log(item);
         })
-    })
+    }
 })
+
+
+

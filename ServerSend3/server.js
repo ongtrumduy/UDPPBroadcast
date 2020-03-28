@@ -43,13 +43,14 @@ sleep = (ms) => {
 
 
 sendMessage()
-
+var count = 0;
 
 async function sendMessage() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 100; i++) {
         await sleep(100);
         // console.log("Iteration ", i);
         server.send(Buffer.from(message_send), 18181, ip_broadcast);
+        count++;
     }
 }
 
@@ -63,26 +64,19 @@ io.on("connection", function (socket) {
     //     }
     // })
     socket.on("sendserialnumber", function (data) {
-        // console.log("CVCCCCCCCCCCCCCCCCCCCCCCC");
 
-        // let index = number_serial_array.indexOf(data);
-
-
-        if( number_serial_array.indexOf(data)<0){
+        if (number_serial_array.indexOf(data) < 0) {
             number_serial_array.push(data)
         }
-        // number_serial_array.forEach(item => {
-        //     if (data.indexOf(item)==-1) {
-        //         number_serial_array.push(data);
-        //     }
-        // })
+
+    })
+    if (count === 100) {
         console.log("Serial number:");
         number_serial_array.forEach(item => {
             console.log(item);
         })
-    })
+    }
 })
 
 
 
-// Array.indexOf

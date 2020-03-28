@@ -11,7 +11,7 @@ var ip_local = ip.address();
 var ip_last_index = ip_local.lastIndexOf(".");
 var ip_local_convert = ip_local.substring(0, ip_last_index + 1);
 var ip_broadcast = ip_local_convert + "255";
-var ip_receive = [""];
+var ip_receive = [];
 
 
 server.on('error', (err) => {
@@ -34,11 +34,9 @@ server.on('message', (msg, rinfo) => {
   if (msg_convert === "IP?") {
     // console.log("Đã nhận được");
     const ip_receive_convert = rinfo.address.toString("utf8")
-    ip_receive.forEach(item => {
-      if (ip_receive_convert !== item) {
-        ip_receive.push(ip_receive_convert);
-      }
-    })
+    if (ip_receive.indexOf(ip_receive_convert) < 0) {
+      ip_receive.push(ip_receive_convert);
+    }
     var server_receive_address = "http://" + ip_receive_convert + ":" + rinfo.port;
     console.log(server_receive_address);
     const socket = io_client.connect(server_receive_address);
