@@ -28,7 +28,7 @@ server.bind(port);
 var serial_number = "124584";
 
 server.on('message', (msg, rinfo) => {
-  console.log(`Nhận: ${msg} từ ${rinfo.address}:${rinfo.port}`);
+  // console.log(`Nhận: ${msg} từ ${rinfo.address}:${rinfo.port}`);
   var msg_convert = msg.toString("utf8");
   // console.log(msg_convert);
   if (msg_convert === "IP?") {
@@ -36,20 +36,18 @@ server.on('message', (msg, rinfo) => {
     const ip_receive_convert = rinfo.address.toString("utf8")
     if (ip_receive.indexOf(ip_receive_convert) < 0) {
       ip_receive.push(ip_receive_convert);
+      console.log("=============================================");
+      console.log("Các IP đã nhận: ");
+      ip_receive.forEach(item => {
+        console.log(item);
+      })
+      console.log("=============================================");
     }
     var server_receive_address = "http://" + ip_receive_convert + ":" + rinfo.port;
-    console.log(server_receive_address);
+    // console.log(server_receive_address);
     const socket = io_client.connect(server_receive_address);
     // socket.emit("sendIP", ip_local);
     socket.emit("sendserialnumber", serial_number);
-
-    console.log("=============================================");
-    console.log("Các IP đã nhận: ");
-    ip_receive.forEach(item => {
-      console.log(item);
-    })
-    console.log("=============================================");
-
   }
 });
 
