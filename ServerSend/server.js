@@ -47,7 +47,7 @@ sendMessage()
 
 async function sendMessage() {
     for (let i = 0; i < 100; i++) {
-        await sleep(100);
+        await sleep(10);
         // console.log("Iteration ", i);
         server.send(Buffer.from(message_send), 18181, ip_broadcast);
         count++;
